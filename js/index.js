@@ -35,9 +35,13 @@ function calculateAll() {
 // ITERATION 4
 
 function removeProduct(event) {
-  const target = event.currentTarget;
+  const target = event.currentTarget.parentNode.parentNode;
   console.log('The target in remove is:', target);
   //... your code goes here
+  const productListElement = document.querySelector('tbody');
+  productListElement.removeChild(target);
+
+  calculateAll();
 }
 
 // ITERATION 5
@@ -51,4 +55,9 @@ window.addEventListener('load', () => {
   calculatePricesBtn.addEventListener('click', calculateAll);
 
   //... your code goes here
+  const removeButton = document.querySelectorAll('.btn-remove');
+
+  for (const btn of removeButton) {
+    btn.addEventListener('click', removeProduct);
+  }
 });
