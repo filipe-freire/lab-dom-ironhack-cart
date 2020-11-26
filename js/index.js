@@ -1,11 +1,12 @@
 // ITERATION 1
 
 function updateSubtotal(product) {
-  console.log('Calculating subtotal, yey!');
+  // console.log('Calculating subtotal, yey!');
   //... your code goes here
   const price = product.querySelector('.price span');
   const quantity = product.querySelector('.quantity input');
-  const subTotal = quantity.valueAsNumber * parseInt(price.innerHTML);
+  const subTotal = quantity.valueAsNumber * Number(price.innerHTML); // parseInt(price.innerHTML) also works
+
   return (product.querySelector('.subtotal span').innerHTML = subTotal);
 }
 
@@ -18,6 +19,7 @@ function calculateAll() {
   // ITERATION 2
   //... your code goes here
   const products = document.getElementsByClassName('product');
+  console.log(products);
 
   let sum = 0;
   for (let product of products) {
@@ -27,7 +29,7 @@ function calculateAll() {
   // ITERATION 3
   //... your code goes here
 
-  let totalValue = (document.getElementById('total-value').querySelector('span').innerHTML = sum);
+  let totalValue = (document.querySelector('#total-value span').innerHTML = sum);
 
   return totalValue;
 }
@@ -48,6 +50,41 @@ function removeProduct(event) {
 
 function createProduct() {
   //... your code goes here
+  const product = document.querySelectorAll('.create-product input')[0];
+  const amount = document.querySelectorAll('.create-product input')[1];
+  console.log(product);
+
+  if (product.value.trim() && amount.value > 0) {
+    const tableBody = document.querySelector('tbody');
+
+    tableBody.innerHTML += `<tr class="product">
+      <td class="name">
+        <span>${product.value}</span>
+      </td>
+      <td class="price">$<span>${Number(amount.value).toFixed(2)}</span></td>
+      <td class="quantity">
+        <input type="number" value="0" min="0" placeholder="Quantity" />
+      </td>
+      <td class="subtotal">$<span>0</span></td>
+      <td class="action">
+        <button class="btn btn-remove">Remove</button>
+      </td>
+    </tr>`;
+
+    addRemoveFunctionToBtns();
+    product.value = '';
+    amount.value = 0;
+  }
+}
+
+function addRemoveFunctionToBtns() {
+  const allRemoveBtn = document.querySelectorAll('.btn.btn-remove');
+
+  allRemoveBtn.forEach(btn => {
+    btn.addEventListener('click', event => {
+      removeProduct(event);
+    });
+  });
 }
 
 window.addEventListener('load', () => {
@@ -60,4 +97,7 @@ window.addEventListener('load', () => {
   for (const btn of removeButton) {
     btn.addEventListener('click', removeProduct);
   }
+
+  const createProdBtn = document.querySelector('#create');
+  createProdBtn.addEventListener('click', createProduct);
 });
